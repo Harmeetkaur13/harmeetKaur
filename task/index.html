@@ -1,0 +1,263 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+
+	<title>AJAX/PHP/CURL/JSON task</title>
+	<meta name="description" content="AJAX/PHP/CURL/JSON example">
+	<meta name="author" content="Paddy Evans">
+	<link rel="stylesheet" href="libs/css/style.css">
+</head>
+
+<body>
+	<table class="entry">
+		<tr>
+			<td>API name</td>
+			<td>API description</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>CountryInfo</td>
+			<td> Returns Country Iformation i.e. Continent,Capital,Languages,Population and Area in square
+				Km</td>
+			<td>
+				<select id="selCountry">
+					<option value="GB">Great Britain</option>
+					<option value="FR">France</option>
+					<option value="DE">Germany</option>
+					<option value="US">USA</option>
+				</select>
+
+				<select id="selLanguage">
+					<option value="en">English</option>
+					<option value="fr">Francais</option>
+					<option value="de">Deutsche</option>
+				</select>
+				<button id="btnRun">Run</button>
+			</td>
+		</tr>
+		<tr>
+			<td>Timezone</td>
+			<td>Returns the timezone for the given latitude/longitude</td>
+			<td><select id="latitude">
+					<option value="19.0760">19.0760</option>
+					<option value="51.5074">51.5074</option>
+					<option value="40.7128">40.7128</option>
+					<option value="35.6895">35.6895</option>
+					<option value="-33.8688">-33.8688</option>
+					<option value="-33.9249">-33.9249</option>
+					<option value="48.8566">48.8566</option>
+				</select>
+				<select id="longitude">
+					<option value="72.8777">72.8777</option>
+					<option value="48.8566">48.8566</option>
+					<option value="-0.1278°">-0.1278</option>
+					<option value="-74.0060">-74.0060</option>
+					<option value="139.6917"> 139.6917</option>
+					<option value="151.2093">151.2093</option>
+					<option value=" 18.4241"> 18.4241</option>
+					<option value="2.3522">2.3522</option>
+				</select><!-- <input type="number" id="latitude" placeholder="latitude" value="7" min="-90" max="+90">
+
+				<input type="number" id="longitude" placeholder="longitude" value="7" min="-180" max="180"> -->
+
+				<button id="btnRun1">Run</button>
+			</td>
+		</tr>
+		<tr>
+			<td>Neighbourhood</td>
+			<td>Returns the neighbourhood for the given latitude/longitude</td>
+			<td><select id="lati">
+					<option value="40.7128">40.7128</option>
+					<option value="34.0522">34.0522</option>
+					<option value="41.8781">41.8781</option>
+					<option value="29.7604">29.7604</option>
+					<option value="25.7617">24.7604</option>
+				</select>
+				<select id="longi">
+					<option value="-74.0060">-74.0060</option>
+					<option value="-118.2437">-118.2437</option>
+					<option value="-87.6298">-87.6298</option>
+					<option value="-95.3698">-95.3698</option>
+					<option value="-80.1918">-80.1918</option>
+				</select>
+				<!-- <input type="number" id="lati" placeholder="choose latitude" min="24.396308" max="49.384358">
+				<input type="number" id="longi" placeholder="choose longitude" min="-125.0" max="-66.93457"> -->
+				<button id="btnRun2">Run</button>
+			</td>
+		</tr>
+	</table>
+	<div id="divResults">
+		<table class="results">
+			<tr>
+				<td align="right">
+					Continent:
+				</td>
+				<td id="txtContinent">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Capital:
+				</td>
+				<td id="txtCapital">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Languages:
+				</td>
+				<td id="txtLanguages">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Population:
+				</td>
+				<td id="txtPopulation">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Area (km<sup>2</sup>):
+				</td>
+				<td id="txtArea">
+
+				</td>
+
+			</tr>
+		</table>
+
+		<table class="results">
+
+			<tr>
+				<td align="right">
+					CountryCode:
+				</td>
+				<td id="txtCountrycode">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					TimezoneId:
+				</td>
+				<td id="txtTimezoneid">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					CountryName:
+				</td>
+				<td id="txtcountryname">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Time:
+				</td>
+				<td id="txttime">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Sunset:
+				</td>
+				<td id="txtsunset">
+
+				</td>
+
+			</tr>
+			<tr>
+				<td align="right">
+					Sunrise:
+				</td>
+				<td id="txtsunrise">
+
+				</td>
+
+			</tr>
+
+
+		</table>
+		<table class="results">
+			<tr>
+				<td align="right">
+					Country Code:
+				</td>
+				<td id="txtContCode">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Country Name:
+				</td>
+				<td id="txtCName">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					Name:
+				</td>
+				<td id="txtName">
+
+				</td>
+
+			</tr>
+
+			<tr>
+				<td align="right">
+					City:
+				</td>
+				<td id="txtcity">
+
+				</td>
+
+			</tr>
+
+
+		</table>
+
+
+
+
+	</div>
+
+	<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
+	<script type="application/javascript" src="libs/js/script.js"></script>
+
+</body>
+
+</html>

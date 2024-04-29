@@ -1,0 +1,16 @@
+#divResults {
+    display: flex;
+}
+
+.results {
+    display: inline-block;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10%;
+    background-color: rgb(102, 102, 188);
+}
+
+.entry tr td {
+    border: 1px solid #ccc;
+
+}
