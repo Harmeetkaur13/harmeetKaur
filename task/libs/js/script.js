@@ -94,3 +94,34 @@ $('#btnRun2').click(function () {
 	});
 
 });
+$('#btnRun3').click(function () {
+
+	$.ajax({
+		url: "libs/php/getfindNearbyPlaceName.php",
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			longg: $('#longg').val(),
+			latt: $('#latt').val()
+		},
+		success: function (result) {
+
+			console.log(JSON.stringify(result));
+
+			if (result.status.name == "ok") {
+
+				$('#txtContID').html(result['data'][0]['countryId']);
+				$('#txtTzone').html(result['data'][0]['timezone']['timeZoneId']);
+				$('#txtdistance').html(result['data'][0]['distance']);
+				$('#txtContName').html(result['data'][0]['countryName']);
+				$('#txtContiCode').html(result['data'][0]['continentCode']);
+
+			}
+
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			console.log(jqXHR);
+		}
+	});
+
+});
