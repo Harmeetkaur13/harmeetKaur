@@ -26,7 +26,7 @@ $(document).ready(function () {
     var infoBtn = L.easyButton("fa-info", function (btn, map) {
         $("#Modal").modal("show");
     }).addTo(map);
-
+    var countryLayer;
     // Fill the select option with available countries from the border data file
     $.ajax({
         url: "php/select.php",
@@ -64,21 +64,19 @@ $(document).ready(function () {
                 });
 
                 if (countryBorder && countryBorder.geometry) {
-                    // Remove existing country border layer
-                    if (map.hasLayer(countryLayer)) {
-                        map.removeLayer(countryLayer);
-                    }
 
+                    // Remove existing country border layer
+                    if (countryLayer) {
+                        map.removeLayer(countryLayer);
+                        map.setView([54.5, -4], 6);
+                    }
                     // Create new country border layer and add to map
                     countryLayer = L.geoJSON(countryBorder.geometry, {
                         style: {
                             color: 'red', // Border color
-                            weight: 2 // Border width
+                            weight: 1 // Border width
                         }
                     });
-                    if (map.hasLayer(countryLayer)) {
-                        map.removeLayer(countryLayer);
-                    }
 
                     countryLayer.addTo(map);
                     // Fit map to country border bounds
