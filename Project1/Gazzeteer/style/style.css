@@ -11,6 +11,7 @@ body {
     padding: 0;
 }
 
+
 #selectContainer {
     position: fixed;
     top: 0;
@@ -18,11 +19,23 @@ body {
     width: 100%;
     padding: 11px 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    align-content: center;
+    justify-content: center;
 }
 
 #countrySelect {
     width: 200px;
     margin: 0 auto;
+    visibility: hidden;
+}
+
+#getLocationimg {
+    padding-left: 2px;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+#description {
+    visibility: hidden;
 }
