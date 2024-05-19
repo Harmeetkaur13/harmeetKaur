@@ -1,0 +1,197 @@
+<option value="AFN">Afghanistan</option>
+<option value="ALL">Albania</option>
+<option value="AMD">Armenia</option>
+<option value="DZD">Algeria</option>
+<option value="AOA">Angola</option>
+<option value="AZN">Azerbaijan</option>
+<option value="BDT">Bangladesh</option>
+<option value="BSD">Bahamas</option>
+<option value="EUR">Austria</option>
+<option value="ARS">Argentina</option>
+<option value="EUR">Belgium</option>
+<option value="BYN">Belarus</option>
+<option value="BZD">Belize</option>
+<option value="XOF">Benin</option>
+<option value="BTN">Bhutan</option>
+<option value="BOB">Bolivia</option>
+<option value="BAM">Bosnia and Herzegovina</option>
+<option value="BWP">Botswana</option>
+<option value="BND">Brunei</option>
+<option value="BGN">Bulgaria</option>
+<option value="XOF">Burkina Faso</option>
+<option value="BIF">Burundi</option>
+<option value="KHR">Cambodia</option>
+<option value="AUD">Australia</option>
+<option value="XAF">Cameroon</option>
+<option value="XAF">Central African Republic</option>
+<option value="XAF">Chad</option>
+<option value="BRL">Brazil</option>
+<option value="XAF">Congo Republic</option>
+<option value="COP">Colombia</option>
+<option value="CNY">China</option>
+<option value="CRC">Costa Rica</option>
+<option value="EUR">Cyprus</option>
+<option value="EUR">Croatia</option>
+<option value="CUP">Cuba</option>
+<option value="CZK">Czechia</option>
+<option value="XOF">Ivory Coast</option>
+<option value="KPW">North Korea</option>
+<option value="CDF">DR Congo</option>
+<option value="DJF">Djibouti</option>
+<option value="EGP">Egypt</option>
+<option value="DOP">Dominican Republic</option>
+<option value="USD">Ecuador</option>
+<option value="DKK">Denmark</option>
+<option value="USD">El Salvador</option>
+<option value="XAF">Equatorial Guinea</option>
+<option value="ERN">Eritrea</option>
+<option value="EUR">Estonia</option>
+<option value="ETB">Ethiopia</option>
+<option value="FKP">Falkland Islands</option>
+<option value="FJD">Fiji</option>
+<option value="XAF">Gabon</option>
+<option value="GMD">The Gambia</option>
+<option value="EUR">France</option>
+<option value="EUR">Finland</option>
+<option value="GEL">Georgia</option>
+<option value="CLP">Chile</option>
+<option value="EUR">Germany</option>
+<option value="GHS">Ghana</option>
+<option value="GTQ">Guatemala</option>
+<option value="GNF">Guinea</option>
+<option value="XOF">Guinea-Bissau</option>
+<option value="EUR">Greece</option>
+<option value="GYD">Guyana</option>
+<option value="HTG">Haiti</option>
+<option value="HUF">Hungary</option>
+<option value="HNL">Honduras</option>
+<option value="ISK">Iceland</option>
+<option value="IRR">Iran</option>
+<option value="IQD">Iraq</option>
+<option value="ILS">Israel</option>
+<option value="INR">India</option>
+<option value="EUR">Ireland</option>
+<option value="JMD">Jamaica</option>
+<option value="EUR">Italy</option>
+<option value="DKK">Greenland</option>
+<option value="JOD">Jordan</option>
+<option value="IDR">Indonesia</option>
+<option value="KES">Kenya</option>
+<option value="KZT">Kazakhstan</option>
+<option value="EUR">Kosovo</option>
+<option value="KWD">Kuwait</option>
+<option value="KRW">South Korea</option>
+<option value="KGS">Kyrgyzstan</option>
+<option value="LAK">Laos</option>
+<option value="EUR">Latvia</option>
+<option value="LBP">Lebanon</option>
+<option value="LSL">Lesotho</option>
+<option value="LRD">Liberia</option>
+<option value="LYD">Libya</option>
+<option value="EUR">Luxembourg</option>
+<option value="MKD">North Macedonia</option>
+<option value="EUR">Lithuania</option>
+<option value="MGA">Madagascar</option>
+<option value="MWK">Malawi</option>
+<option value="MYR">Malaysia</option>
+<option value="XOF">Mali</option>
+<option value="MRU">Mauritania</option>
+<option value="MDL">Moldova</option>
+<option value="EUR">Montenegro</option>
+<option value="MNT">Mongolia</option>
+<option value="MAD">Morocco</option>
+<option value="MZN">Mozambique</option>
+<option value="NAD">Namibia</option>
+<option value="NPR">Nepal</option>
+<option value="MXN">Mexico</option>
+<option value="MMK">Myanmar</option>
+<option value="XPF">New Caledonia</option>
+<option value="EUR">The Netherlands</option>
+<option value="XOF">Niger</option>
+<option value="NIO">Nicaragua</option>
+<option value="NGN">Nigeria</option>
+<option value="NZD">New Zealand</option>
+<option value="OMR">Oman</option>
+<option value="ILS">Palestine</option>
+<option value="PKR">Pakistan</option>
+<option value="NOK">Norway</option>
+<option value="PAB">Panama</option>
+<option value="PYG">Paraguay</option>
+<option value="PEN">Peru</option>
+<option value="CAD">Canada</option>
+<option value="PGK">Papua New Guinea</option>
+<option value="PLN">Poland</option>
+<option value="JPY">Japan</option>
+<option value="EUR">Portugal</option>
+<option value="QAR">Qatar</option>
+<option value="RON">Romania</option>
+<option value="USD">Puerto Rico</option>
+<option value="RWF">Rwanda</option>
+<option value="SSP">South Sudan</option>
+<option value="SAR">Saudi Arabia</option>
+<option value="XOF">Senegal</option>
+<option value="RSD">Serbia</option>
+<option value="SLL">Sierra Leone</option>
+<option value="EUR">Slovakia</option>
+<option value="EUR">Slovenia</option>
+<option value="SOS">Somalia</option>
+<option value="SBD">Solomon Islands</option>
+<option value="ZAR">South Africa</option>
+<option value="SDG">Sudan</option>
+<option value="LKR">Sri Lanka</option>
+<option value="EUR">Spain</option>
+<option value="SRD">Suriname</option>
+<option value="SZL">Eswatini</option>
+<option value="SYP">Syria</option>
+<option value="CHF">Switzerland</option>
+<option value="SEK">Sweden</option>
+<option value="TWD">Taiwan</option>
+<option value="TJS">Tajikistan</option>
+<option value="TZS">Tanzania</option>
+<option value="XOF">Togo</option>
+<option value="TTD">Trinidad and Tobago</option>
+<option value="THB">Thailand</option>
+<option value="USD">Timor-Leste</option>
+<option value="TND">Tunisia</option>
+<option value="UGX">Uganda</option>
+<option value="TMT">Turkmenistan</option>
+<option value="TRY">Türkiye</option>
+<option value="AED">United Arab Emirates</option>
+<option value="UAH">Ukraine</option>
+<option value="UZS">Uzbekistan</option>
+<option value="UYU">Uruguay</option>
+<option value="VUV">Vanuatu</option>
+<option value="VES">Venezuela</option>
+<option value="MAD">Western Sahara</option>
+<option value="VND">Vietnam</option>
+<option value="YER">Yemen</option>
+<option value="PHP">Philippines</option>
+<option value="ZMW">Zambia</option>
+<option value="ZWL">Zimbabwe</option>
+<option value="GBP">United Kingdom</option>
+<option value="USD">United States</option>
+<option value="RUB">Russia</option></select>
+
+
+{
+    "Vietnam": {
+        "latitude": 14.058324,
+        "longitude": 108.277199,
+        "currencyCode": "VND"
+    },
+    "Yemen": {
+        "latitude": 15.552727,
+        "longitude": 48.516388,
+        "currencyCode": "YER"
+    },
+    "Zambia": {
+        "latitude": -13.133897,
+        "longitude": 27.849332,
+        "currencyCode": "ZMW"
+    },
+    "Zimbabwe": {
+        "latitude": -19.015438,
+        "longitude": 29.154857,
+        "currencyCode": "ZWL"
+    }
+}
