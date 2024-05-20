@@ -62,7 +62,8 @@ $(document).ready(function () {
             onClick: function (btn, map) {
                 $("#Modal").modal("show");
             }
-        }]
+        }],
+        className: 'custom-button'
     });
 
     var weatherBtn = L.easyButton({
@@ -290,26 +291,42 @@ $(document).ready(function () {
         /////call fetchCountryImages(country)///////////////////////////////////////////////////////////////////////////////////
         fetchCountryImages(countryName);
         fetchCoordinates(countryName);
+        fetchairports(countryName);
 
         //////////////////////////////  /////////adding data to info button from countryinfo(geonames)/////////////////////////
 
-        const url = `http://api.geonames.org/countryInfoJSON?formatted=true&country=${countryCode}&username=harmeetkaur&style=full`;
+        //const url = `http://api.geonames.org/countryInfoJSON?formatted=true&country=${countryCode}&username=harmeetkaur&style=full`;
 
         $.ajax({
-            url: url,
+            url: 'php/info.php',
             type: 'GET',
             dataType: 'json',
+            data: {
+                countryCode: countryCode
+            },
             success: function (data) {
-                $('#txtcurrencyCode').html(data.geonames[0].currencyCode);
-                ///////filling currency selectFrom also 
-                $('#currencycodeFrom').html(data.geonames[0].currencyCode);
-                $('#txtCapital').html(data.geonames[0].capital);
-                $('#txtLanguages').html(data.geonames[0].languages);
-                $('#txtPopulation').html(data.geonames[0].population);
-                $('#txtArea').html(data.geonames[0].areaInSqKm);
-                var cityName = data.geonames[0].capital;
-                console.log(cityName);
-                onweatherload(cityName);
+                if (data.geonames && data.geonames.length > 0) {
+                    $('#txtcurrencyCode').html(data.geonames[0].currencyCode);
+                    ///////filling currency selectFrom also 
+                    $('#currencycodeFrom').html(data.geonames[0].currencyCode);
+                    $('#txtCapital').html(data.geonames[0].capital);
+                    $('#txtLanguages').html(data.geonames[0].languages);
+                    var num = data.geonames[0].population;
+                    function formatNumber(num) {
+                        let str = num.toString().split('.');
+                        str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return str.join('.');
+                    }
+                    var population = formatNumber(num);
+                    $('#txtPopulation').html(population);
+                    var area = formatNumber(data.geonames[0].areaInSqKm);
+                    $('#txtArea').html(area);
+                    var cityName = data.geonames[0].capital;
+                    console.log(cityName);
+                    onweatherload(cityName);
+                } else {
+                    console.log('No data found');
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
@@ -373,34 +390,38 @@ $(document).ready(function () {
                 // Check if the country exists in the data
                 if (data.hasOwnProperty(countryName)) {
 
-                    let latitude = data[countryName].latitude;
-                    let longitude = data[countryName].longitude;
+                    var latitude = data[countryName].latitude;
+                    var longitude = data[countryName].longitude;
                     console.log(latitude, longitude);
-                    urltimezone = `http://api.geonames.org/timezoneJSON?formatted=true&lat=${latitude}&lng=${longitude}&username=harmeetkaur&style=full`;
+                    //urltimezone = `http://api.geonames.org/timezoneJSON?formatted=true&lat=${latitude}&lng=${longitude}&username=harmeetkaur&style=full`;
 
                     /////////////////////////////////timezone getting for modal2
                     $.ajax({
-                        url: urltimezone,
-                        type: 'GET',
+                        url: "php/timezone.php",
+                        type: 'POST',
                         dataType: 'json',
-                        success: function (data) {
+                        data: {
+                            latitude: latitude,
+                            longitude: longitude
+                        },
+                        success: function (result) {
 
-                            // var result = JSON.stringify(data);
+                            console.log(JSON.stringify(result));
 
-                            // console.log(result[0].sunrise);
-                            console.log(data);
-                            $('#txtCountryc').html(data['countryCode']);
-                            $('#txtTimezoneid').html(data['timezoneId']);
-                            $('#txtcountryname').html(data['countryName']);
-                            $('#txttime').html(data['time']);
-                            $('#txtsunset').html(data['sunset']);
-                            $('#txtsunrise').html(data['sunrise']);
+                            if (result.status.name == "ok") {
+                                $('#txtCountryc').html(result['data']['countryCode']);
+                                $('#txtTimezoneid').html(result['data']['timezoneId']);
+                                $('#txtcountryname').html(result['data']['countryName']);
+                                $('#txttime').html(result['data']['time']);
+                                $('#txtsunset').html(result['data']['sunset']);
+                                $('#txtsunrise').html(result['data']['sunrise']);
+
+                            }
 
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
-                            console.log(jqXHR);
+                            console.log(jqXHR)
                         }
-
                     });
 
                 } else {
@@ -557,8 +578,45 @@ $(document).ready(function () {
 
     })
 
+    //////////////////////////////////fetch airports and mark them to map
+    function fetchairports(countryName) {
+        $.getJSON('files/airports.json', function (data) {
+            console.log(data); // Inspect the data fetched
 
+            // Clear existing markers
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
 
+            // Filter airports by country
+            const filteredAirports = data.filter(airport => airport.country === countryName).slice(0, 10);
+            var airportIcon = L.icon({
+                iconUrl: 'images/airports.webp',
 
+                iconSize: [18, 25], // size of the icon
+                // shadowSize: [50, 64], // size of the shadow
+                iconAnchor: [12, 14], // point of the icon which will correspond to marker's location
+                // shadowAnchor: [4, 62],  // the same for the shadow
+                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+            });
 
+            // Add markers for each filtered airport
+            filteredAirports.forEach(airport => {
+                L.marker([airport.latitude, airport.longitude], { icon: airportIcon })
+                    .bindPopup(`<b>${airport.name}</b><br>${airport.city}`)
+                    .addTo(map);
+
+            });
+
+            // Adjust the view to the first airport in the list if available
+            if (filteredAirports.length > 0) {
+                const firstAirport = filteredAirports[0];
+                map.setView([firstAirport.latitude, firstAirport.longitude], 5);
+            }
+        }).fail(function (jqxhr, textStatus, error) {
+            console.error('Failed to fetch JSON:', textStatus, error);
+        });
+    }
 });

@@ -38,16 +38,3 @@ body {
 #description {
     visibility: hidden;
 }
-
-.collage-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    /* Adjust as needed */
-    gap: 10px;
-    /* Adjust gap between images */
-}
-
-.collage-image {
-    width: 200px;
-    height: 200px;
-}

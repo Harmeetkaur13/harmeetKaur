@@ -10,6 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="Harmeet kaur">
     <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/easybutton.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <!-- Include Leaflet JavaScript file after Leaflet’s CSS: -->
@@ -26,14 +27,14 @@
 
 <body>
     <span id="selectContainer">
-        <select id="country" class="form-select shadow-sm">
+        <select id="country" name="country" class="form-select shadow-sm ">
             <!-- populate from an AJAX CALL to a PHP routine that returns a JSON object that is an array of just ISO codes and names from countryBorders.geo.json -->
             <option value="select">Select Country</option>
         </Select>
-        <img id="getLocationimg" src="images/OIP.jpeg ">
-        <div id="description">Get current location</div>
+        <img id="getLocationimg" name="getLocationimg" src="images/OIP.jpeg ">
+        <div id="description" class="description">Get current location</div>
     </span>
-    <div id="map"></div>
+    <div id="map" class="form-control"></div>
     <div id="Modal" class="modal" data-bs-backdrop="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content shadow">
@@ -416,7 +417,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-bordered table-responsive table-hover">
                         <tr>
 
                             <td class="text-center">
@@ -451,7 +452,7 @@
 
                             <td class="text-start">
                                 <i class="fa-solid fa-car fa-xl text-success"></i>
-                                <div id="currencycodeFrom"></div>
+                                <div id="currencycodeFrom" form-control></div>
 
                             </td>
 
@@ -495,7 +496,7 @@
                             </td>
 
                             <td>
-                                <button id="convert">Convert</button>
+                                <button id="convert" class="btn btn-primary">Convert</button>
 
                             </td>
 
@@ -517,6 +518,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/javascript.js"></script>
+
     <!-- Bootstrap JavaScript must included after jquery-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
