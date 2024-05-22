@@ -54,6 +54,7 @@ $(document).ready(function () {
     // Add layer control
     var layerControl = L.control.layers(basemaps).addTo(map);
 
+
     var infoBtn = L.easyButton({
         states: [{
             stateName: 'fa-info',
@@ -165,7 +166,7 @@ $(document).ready(function () {
                     var longitude = position.coords.longitude;
 
                     // Set map view to user's current location
-                    map.setView([latitude, longitude], 10);
+                    map.setView([latitude, longitude], 7);
                     var marker = L.marker([latitude, longitude]).addTo(map);
                     var geocoder = L.Control.Geocoder.nominatim();
                     geocoder.reverse(
@@ -592,23 +593,30 @@ $(document).ready(function () {
 
             // Filter airports by country
             const filteredAirports = data.filter(airport => airport.country === countryName).slice(0, 10);
-            var airportIcon = L.icon({
-                iconUrl: 'images/airports.webp',
+            var markers = L.markerClusterGroup();
+            // Check if L.ExtraMarkers.icon is available
+            if (L.ExtraMarkers !== 'undefined') {
+                var airportIcon = L.ExtraMarkers.icon({
+                    icon: 'fa-coffee',
+                    markerColor: 'red',
+                    shape: 'square',
+                    prefix: 'fa',
 
-                iconSize: [18, 25], // size of the icon
-                // shadowSize: [50, 64], // size of the shadow
-                iconAnchor: [12, 14], // point of the icon which will correspond to marker's location
-                // shadowAnchor: [4, 62],  // the same for the shadow
-                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-            });
+                });
+            }
+            else {
+                console.error('L.ExtraMarkers.icon is not defined or not loaded properly');
+                return;
+            }
 
             // Add markers for each filtered airport
             filteredAirports.forEach(airport => {
-                L.marker([airport.latitude, airport.longitude], { icon: airportIcon })
-                    .bindPopup(`<b>${airport.name}</b><br>${airport.city}`)
-                    .addTo(map);
-
+                var marker = L.marker([airport.latitude, airport.longitude], { icon: airportIcon })
+                    .bindPopup(`<b>${airport.name}</b><br>${airport.city}`);
+                markers.addLayer(marker);
             });
+
+            map.addLayer(markers);
 
             // Adjust the view to the first airport in the list if available
             if (filteredAirports.length > 0) {
@@ -619,4 +627,5 @@ $(document).ready(function () {
             console.error('Failed to fetch JSON:', textStatus, error);
         });
     }
+
 });
