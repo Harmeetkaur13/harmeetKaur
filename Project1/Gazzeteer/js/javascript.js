@@ -580,31 +580,28 @@ $(document).ready(function () {
     })
 
     //////////////////////////////////fetch airports and mark them to map
+    var airportMarkersLayer = L.layerGroup(); // Define a layer group to hold airport markers
+
     function fetchairports(countryName) {
         $.getJSON('files/airports.json', function (data) {
             console.log(data); // Inspect the data fetched
 
             // Clear existing markers
-            map.eachLayer(function (layer) {
-                if (layer instanceof L.Marker) {
-                    map.removeLayer(layer);
-                }
-            });
+            airportMarkersLayer.clearLayers();
 
             // Filter airports by country
             const filteredAirports = data.filter(airport => airport.country === countryName).slice(0, 10);
             var markers = L.markerClusterGroup();
+
             // Check if L.ExtraMarkers.icon is available
-            if (L.ExtraMarkers !== 'undefined') {
+            if (typeof L.ExtraMarkers !== 'undefined') {
                 var airportIcon = L.ExtraMarkers.icon({
                     icon: 'fa-coffee',
                     markerColor: 'red',
                     shape: 'square',
-                    prefix: 'fa',
-
+                    prefix: 'fa'
                 });
-            }
-            else {
+            } else {
                 console.error('L.ExtraMarkers.icon is not defined or not loaded properly');
                 return;
             }
@@ -616,7 +613,8 @@ $(document).ready(function () {
                 markers.addLayer(marker);
             });
 
-            map.addLayer(markers);
+            airportMarkersLayer.addLayer(markers); // Add marker cluster group to the airportMarkersLayer
+            map.addLayer(airportMarkersLayer); // Add airportMarkersLayer to the map
 
             // Adjust the view to the first airport in the list if available
             if (filteredAirports.length > 0) {
