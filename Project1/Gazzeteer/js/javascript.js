@@ -58,7 +58,7 @@ $(document).ready(function () {
     var infoBtn = L.easyButton({
         states: [{
             stateName: 'fa-info',
-            icon: '<img src="images/info.jpeg" style="width:1.2em;height: 1.2em; margin-top:3px">',
+            icon: '<img src="images/info.jpeg" style="width:1em;height:1em; margin-top:4px">',
             title: 'Show Info',
             onClick: function (btn, map) {
                 $("#Modal").modal("show");
@@ -70,7 +70,7 @@ $(document).ready(function () {
     var weatherBtn = L.easyButton({
         states: [{
             stateName: 'fa-weather',
-            icon: '<img class ="imgicon" src="images/weather.jpeg" style="width:1.2em;height: 1.2em; margin-top:3px">',
+            icon: '<img class ="imgicon" src="images/weather.jpeg" style="width:1em;height:1em; margin-top:4px">',
             title: 'Show weather',
             onClick: function (btn, map) {
                 $("#Modal1").modal("show");
@@ -80,7 +80,7 @@ $(document).ready(function () {
     var timezoneBtn = L.easyButton({
         states: [{
             stateName: 'fa-timezone',
-            icon: '<img class ="imgicon" src="images/timezone.jpeg" style="width:1.2em;height: 1.2em; margin-top:3px">',
+            icon: '<img class ="imgicon" src="images/timezone.jpeg" style="width:1em;height:1em; margin-top:4px">',
             title: 'timezone',
             onClick: function (btn, map) {
                 $("#Modal2").modal("show");
@@ -90,7 +90,7 @@ $(document).ready(function () {
     var imagesBtn = L.easyButton({
         states: [{
             stateName: 'fa-images',
-            icon: '<img class ="imgicon" src="images/gallery.jpeg" style="width:1.2em;height: 1.2em; margin-top:3px">',
+            icon: '<img class ="imgicon" src="images/gallery.jpeg" style="width:1em;height:1em; margin-top:4px">',
             title: 'Show country images',
             onClick: function (btn, map) {
                 $("#Modal3").modal("show");
@@ -100,7 +100,7 @@ $(document).ready(function () {
     var currncyBtn = L.easyButton({
         states: [{
             stateName: 'fa-currency',
-            icon: '<img class ="imgicon" src="images/currency.jpeg" style="width:1.2em;height: 1.2em; margin-top:3px">',
+            icon: '<img class ="imgicon" src="images/currency.jpeg" style="width:1em;height:1em; margin-top:4px" >',
             title: 'currrency exchange',
             onClick: function (btn, map) {
                 $("#Modal4").modal("show");
@@ -590,7 +590,7 @@ $(document).ready(function () {
             airportMarkersLayer.clearLayers();
 
             // Filter airports by country
-            const filteredAirports = data.filter(airport => airport.country === countryName).slice(0, 10);
+            const filteredAirports = data.filter(airport => airport.country === countryName).slice(0, 40);
             var markers = L.markerClusterGroup();
 
             // Check if L.ExtraMarkers.icon is available
@@ -627,3 +627,5 @@ $(document).ready(function () {
     }
 
 });
+
+
