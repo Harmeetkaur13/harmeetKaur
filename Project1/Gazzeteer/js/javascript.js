@@ -273,6 +273,9 @@ $(document).ready(function () {
         // filling the model(every model)(countryname)
         var modalElements = document.querySelectorAll('.modal');
         var selectElement = document.getElementById("country");
+        ///empty previous data in currency momal
+        document.querySelector('#amountResult').value = " ";
+        document.querySelector('#currencySelected').innerHTML = " ";
 
         // var modalHeader = document.querySelector('.modal-header');
         var countryName = selectElement.options[country.selectedIndex].text;
