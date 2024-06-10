@@ -1,0 +1,316 @@
+<!-- <div id="Modal1" class="modal" data-bs-backdrop="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-success bg-gradient text-white">
+                <h5 class="modal-title">Overview</h5>
+                <img src="" alt="countryflag" class="country-flag" style="width: 60px;height:40px; margin-left:0">
+                <button type="button" class="close-button btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tr aria-colspan="2">
+
+                        <td colspan="2" class="text-center"><i class="fa-solid fa-bell fa-xl text-success"></i>Today's
+                            Weather
+                        </td>
+                        <td>
+
+                        </td>
+                        <td id="text-end">
+                            <img id="currentimg" class="fa-solid fa-anchor fa-xl text-success"
+                                src='images/weather.jpeg'>
+                        </td>
+                        <td class="text-end" id="txtdescription">value</td>
+
+
+                    </tr>
+                    <tr aria-colspan="2">
+
+                        <td class="text-center">
+
+                            <i class="fa-solid fa-bell fa-xl text-success"></i>
+                        </td>
+
+                        <td>
+                            Temperature
+                        </td>
+
+                        <td class="text-end" id="temperature">
+                            value
+                        </td>
+                        <td>
+                            feels like
+                        </td>
+
+                        <td class="text-end" id="feelslike">
+                            value
+                        </td>
+
+
+
+
+                    </tr>
+                    <tr>
+
+                        <td class="text-center">
+
+                        </td>
+
+                        <td>
+                            Max temp
+                        </td>
+
+                        <td class="text-end" id="maxtemp">
+                            value
+                        </td>
+                        <td>Min temp</td>
+                        <td class="text-end" id="mintemp"></td>
+
+
+                    </tr>
+                    <tr aria-colspan="2">
+
+                        <td class="text-center" colspan="2">
+                            <i class="fa-solid fa-money-bill fa-xl text-success"></i>Weather Forecast
+                        </td>
+
+                        <td>
+
+                        </td>
+
+                        <td class="text-end">
+
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+
+                        <td class="text-center">
+                            <i class="fa-solid fa-wifi fa-xl text-success"></i>Day 1
+                        </td>
+                        <td></td>
+                        <td id="day1temp">
+                            value
+                        </td>
+
+                        <td class="text-end" id="day1desc">
+                            value
+                        </td>
+                        <td class="text-end"><img id="day1img" class="fa-solid fa-anchor fa-xl text-success"
+                                src='images/weather.jpeg'></td>
+
+                    </tr>
+                    <tr>
+
+                        <td class="text-center">
+                            <i class="fa-solid fa-wifi fa-xl text-success"></i>Day 2
+                        </td>
+                        <td class="text-end"></td>
+                        <td id="day2temp">
+                            value
+                        </td>
+
+                        <td class="text-end" id="day2desc">
+                            value
+                        </td>
+                        <td><img id="day2img" class="fa-solid fa-anchor fa-xl text-success" src='images/weather.jpeg'>
+                        </td>
+
+                    </tr>
+                    <tr>
+
+                        <td class="text-center">
+                            <i class="fa-solid fa-wifi fa-xl text-success"></i>Day 3
+                        </td>
+                        <td class="text-end"></td>
+                        <td id="day3temp">
+                            value
+                        </td>
+
+                        <td class="text-end" id="day3desc">
+                            value
+                        </td>
+                        <td><img id="day3img" class="fa-solid fa-anchor fa-xl text-success" src='images/weather.jpeg'>
+                        </td>
+
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close-button btn btn-outline-success btn-sm"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="Modal1" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false"
+    aria-labelledby="weatherModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content shadow">
+
+            <div class="modal-header bg-primary bg-gradient text-white">
+
+                <h5 class="modal-title" id="weatherModalLabel"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+
+
+                <div class="row">
+
+                    <div class="col border m-2">
+
+                        <p class="fw-bold fs-5 mt-1">TODAY</p>
+
+                        <div class="row">
+
+                            <div class="col text-center m-3">
+
+                                <p id="todayConditions" class="fw-bold fs-6"></p>
+
+                            </div>
+
+                            <div class="col text-center">
+
+                                <img id="todayIcon" class="img-fluid mt-0" src="" alt="" title="">
+
+                            </div>
+
+                            <div class="col text-center">
+
+                                <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp">3</span><sup>o</sup><span
+                                        class="tempMetric">c</span></p>
+                                <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp">-2</span><sup>o</sup><span
+                                        class="tempMetric">c</span></p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col border m-2">
+
+                        <div class="row">
+
+                            <div class="col text-center">
+
+                                <p id="day1Date" class="fw-bold fs-6 mt-3"></p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col text-center">
+
+                                <p class="fw-bold fs-4 mb-0"><span id="day1MaxTemp"></span><sup>o</sup>c</p>
+                                <p class="fs-5 mt-0 text-secondary"><span id="day1MinTemp"></span><sup>o</sup>c</p>
+
+                            </div>
+
+                            <div class="col text-center">
+
+                                <img id="day1Icon" src="" alt="" title="">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col border m-2">
+
+                        <div class="row">
+
+                            <div class="col text-center">
+
+                                <p id="day2Date" class="fw-bold fs-6 mt-3">Fri 16th</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col text-center">
+
+                                <p class="fw-bold fs-4 mb-0"><span id="day2MaxTemp"></span><sup>o</sup>c</p>
+                                <p class="fs-5 mt-0 text-secondary"><span id="day2MinTemp"></span><sup>o</sup>c</p>
+
+                            </div>
+
+                            <div class="col text-center">
+
+                                <img id="day2Icon" src="" alt="" title="">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <p class="fs-6 fw-light">Last updated <span id="lastUpdated"></span>. Powered by <a
+                        href="https://www.weatherapi.com/" target="_blank" title="Free Weather API">WeatherAPI.com</a>
+                </p>
+            </div>
+
+        </div>
+        <?php
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['base']) && isset($_GET['target'])) {
+        //$apiKey = '51a4258c293c2c74374b0c9b'; 
+        $apiKey = 'af7dd32b1b474dadbf3e55063a2fed53';
+        $baseCurrency = $_GET['base'];
+        $targetCurrency = $_GET['target'];
+        // $url = "https://open.er-api.com/v6/latest/
+// '.$baseCurrency.'?symbols='.$targetCurrency.'&apikey='af7dd32b1b474dadbf3e55063a2fed53'";
+        //$url = "https://openexchangerates.org/api/latest.json?app_id=$apiKey&base=$baseCurrency&symbols=$targetCurrency";
+        //$url = "https://v6.exchangerate-api.com/v6/$apiKey/latest/$baseCurrency";
+        // Initialize cURL session
+        $url = "https://openexchangerates.org/api/latest.json?app_id=$apiKey&base=$baseCurrency&symbols=$targetCurrency";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $result = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+
+        curl_close($ch);
+
+        // Output the response
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($result);
+    } else {
+        echo json_encode(['error' => 'Missing base or target currency parameters']);
+    }
+} else {
+    echo json_encode(['error' => 'Invalid request method']);
+}
+?> -->
