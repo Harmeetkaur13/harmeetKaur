@@ -443,18 +443,18 @@ $(document).ready(function () {
 
                     $('#todayConditions').html(d.forecast.forecastday[0].day.condition.text);
                     $('#todayIcon').attr("src", d.forecast.forecastday[0].day.condition.icon);
-                    $('#todayMaxTemp').html(d.forecast.forecastday[0].day.maxtemp_c);
-                    $('#todayMinTemp').html(d.forecast.forecastday[0].day.mintemp_c);
+                    $('#todayMaxTemp').html(Math.round(d.forecast.forecastday[0].day.maxtemp_c));
+                    $('#todayMinTemp').html(Math.round(d.forecast.forecastday[0].day.mintemp_c));
 
                     $('#day1Date').text(new Date(d.forecast.forecastday[1].date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }));
                     $('#day1Icon').attr("src", d.forecast.forecastday[1].day.condition.icon);
-                    $('#day1MinTemp').text(d.forecast.forecastday[1].day.mintemp_c);
-                    $('#day1MaxTemp').text(d.forecast.forecastday[1].day.maxtemp_c);
+                    $('#day1MinTemp').text(Math.round(d.forecast.forecastday[1].day.mintemp_c));
+                    $('#day1MaxTemp').text(Math.round(d.forecast.forecastday[1].day.maxtemp_c));
 
                     $('#day2Date').text(new Date(d.forecast.forecastday[2].date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }));
                     $('#day2Icon').attr("src", d.forecast.forecastday[2].day.condition.icon);
-                    $('#day2MinTemp').text(d.forecast.forecastday[2].day.mintemp_c);
-                    $('#day2MaxTemp').text(d.forecast.forecastday[2].day.maxtemp_c);
+                    $('#day2MinTemp').text(Math.round(d.forecast.forecastday[2].day.mintemp_c));
+                    $('#day2MaxTemp').text(Math.round(d.forecast.forecastday[2].day.maxtemp_c));
 
                     $('#lastUpdated').text(new Date(d.current.last_updated).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ", " + new Date(d.current.last_updated).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }));
 
