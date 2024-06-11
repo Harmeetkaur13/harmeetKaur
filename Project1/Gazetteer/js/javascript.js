@@ -102,72 +102,57 @@ $(document).ready(function () {
     airports.addTo(map);
     cities.addTo(map);
 
+    var infoBtn = L.easyButton({
+        states: [{
+            stateName: 'info ',
+            title: 'Show Info',
+            icon: 'fa-info ',
+            onClick: function (btn, map) {
+                $("#Modal").modal("show");
+            }
+        }]
+    });
 
-    var infoBtn = L.easyButton("fa-info ", function (btn, map) {
-        $("#Modal").modal("show");
-    });
-    var weatherBtn = L.easyButton("fa-cloud-sun ", function (btn, map) {
-        $("#Modal1").modal("show");
-    });
-    var newsBtn = L.easyButton("fa-newspaper", function (btn, map) {
-        $("#Modal2").modal("show");
-    });
-    var imagesBtn = L.easyButton("fa-image", function (btn, map) {
-        $("#Modal3").modal("show");
-    });
-    var currncyBtn = L.easyButton("fa-exchange-alt", function (btn, map) {
-        $("#Modal4").modal("show");
-    });
-    // var infoBtn = L.easyButton({
-    //     states: [{
-    //         stateName: 'fa-info',
-    //         title: 'Show Info',
-    //         onClick: function (btn, map) {
-    //             $("#Modal").modal("show");
-    //         }
-    //     }]
-    // });
-
-    // var weatherBtn = L.easyButton({
-    //     states: [{
-    //         stateName: 'fa-weather fa-xl',
-    //         icon: '<img id="iconimg" src="images/weather.jpeg">',
-    //         title: 'Weather forecast',
-    //         onClick: function (btn, map) {
-    //             $("#Modal1").modal("show");
-    //         }
-    //     }]
-    // })
-    // var newsBtn = L.easyButton({
-    //     states: [{
-    //         stateName: 'text-center',
-    //         icon: '<img id="iconimg" src="images/news.jpeg">',
-    //         title: 'Breaking News',
-    //         onClick: function (btn, map) {
-    //             $("#Modal2").modal("show");
-    //         }
-    //     }]
-    // })
-    // var imagesBtn = L.easyButton({
-    //     states: [{
-    //         stateName: 'fa-images',
-    //         icon: '<img id="iconimg" src="images/gallery.jpeg">',
-    //         title: 'Show country images',
-    //         onClick: function (btn, map) {
-    //             $("#Modal3").modal("show");
-    //         }
-    //     }]
-    // })
-    // var currncyBtn = L.easyButton({
-    //     states: [{
-    //         stateName: 'fa-currency',
-    //         icon: '<img id="iconimg" src="images/currency.jpeg"  >',
-    //         title: 'currrency exchange',
-    //         onClick: function (btn, map) {
-    //             $("#Modal4").modal("show");
-    //         }
-    //     }]
-    // })
+    var weatherBtn = L.easyButton({
+        states: [{
+            stateName: 'weather ',
+            icon: 'fa-cloud-sun',
+            title: 'Weather forecast',
+            onClick: function (btn, map) {
+                $("#Modal1").modal("show");
+            }
+        }]
+    })
+    var newsBtn = L.easyButton({
+        states: [{
+            stateName: 'news',
+            icon: 'fa-newspaper',
+            title: 'Breaking News',
+            onClick: function (btn, map) {
+                $("#Modal2").modal("show");
+            }
+        }]
+    })
+    var imagesBtn = L.easyButton({
+        states: [{
+            stateName: 'fa-images',
+            icon: 'fa-image',
+            title: 'Show country images',
+            onClick: function (btn, map) {
+                $("#Modal3").modal("show");
+            }
+        }]
+    })
+    var currncyBtn = L.easyButton({
+        states: [{
+            stateName: 'fa-currency',
+            icon: 'fa-exchange-alt fa-pound-sign',
+            title: 'currrency exchange',
+            onClick: function (btn, map) {
+                $("#Modal4").modal("show");
+            }
+        }]
+    })
     ////////////////close button code
     // Select all modal elements with class 'modal'
     var modalElements = document.querySelectorAll('.modal');
