@@ -1,0 +1,90 @@
+html,
+body {
+    background-color: #f9f6ee;
+    margin: 5px 0px 5px 2px;
+    padding: 5px 0px 5px 2px;
+    overflow: hidden;
+}
+
+section {
+    display: flex;
+    flex-flow: column;
+    height: calc(100vh - 20px);
+}
+
+.tab-content {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+tr {
+    cursor: default;
+}
+
+.myBtn {
+    width: 70px;
+}
+
+.appHeader,
+footer {
+    background-color: #d9d9d1;
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    overflow: hidden;
+    background: #fff;
+}
+
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #0563bb;
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1s linear infinite;
+}
+
+@keyframes animate-preloader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.table-header {
+    background-color: #343a40;
+    /* Darker shade */
+    color: #ffffff;
+    /* White text */
+    font-weight: bold;
+}
+
+.table-header td {
+    padding: 10px;
+    /* Optional: Add some padding for better spacing */
+}
+
+.modal-dialog-left {
+    position: absolute;
+    left: 580px;
+    top: 5%;
+    /* transform: translateY(-50%); */
+    max-width: 300px;
+}
