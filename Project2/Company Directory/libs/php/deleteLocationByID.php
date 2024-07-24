@@ -3,8 +3,6 @@
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
-$executionStartTime = microtime(true);
-
 include ("config.php");
 
 header('Content-Type: application/json; charset=UTF-8');
@@ -16,13 +14,15 @@ header("Pragma: no-cache");
 header('Content-Type: application/json; charset=UTF-8');
 /////////////////
 
-// Retrieve and sanitize locationId from the query string or AJAX request
-$depId = isset($_GET['depId']) ? intval($_GET['depId']) : null;
+$executionStartTime = microtime(true);
 
-if ($depId === null) {
+// Retrieve and sanitize the locationId from the AJAX request
+$locationId = isset($_POST['locationId']) ? intval($_POST['locationId']) : null;
+
+if ($locationId === null) {
     $output['status']['code'] = "400";
     $output['status']['name'] = "bad request";
-    $output['status']['description'] = "missing depId";
+    $output['status']['description'] = "missing locationId";
     $output['data'] = [];
     echo json_encode($output);
     exit;
@@ -46,58 +46,46 @@ if (mysqli_connect_errno()) {
     exit;
 }
 
-// Prepare SQL query with filtering by locationId
-$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name AS department, l.name AS location
-          FROM personnel p
-          LEFT JOIN department d ON d.id = p.departmentID
-          LEFT JOIN location l ON l.id = d.locationID
-          WHERE d.id = ?
-          ORDER BY p.lastName, p.firstName, d.name, l.name';
+// Check for dependencies in the department table
+$query = 'SELECT COUNT(*) AS count FROM department WHERE locationID = ?';
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $locationId);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$stmt->close();
 
-if ($stmt = $conn->prepare($query)) {
-    // Bind the depId parameter
-    $stmt->bind_param("i", $depId);
-    $stmt->execute();
-    $result = $stmt->get_result();
+if ($row['count'] > 0) {
+    $output['status']['code'] = "400";
+    $output['status']['name'] = "dependency";
+    $output['status']['description'] = "cannot delete location with dependencies";
+    $output['data'] = [];
+
+    mysqli_close($conn);
+
+    echo json_encode($output);
+    exit;
+}
+
+// No dependencies found, proceed with deletion
+$query = 'DELETE FROM location WHERE id = ?';
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $locationId);
+$stmt->execute();
+
+if ($stmt->affected_rows > 0) {
+    $output['status']['code'] = "200";
+    $output['status']['name'] = "ok";
+    $output['status']['description'] = "success";
+    $output['data'] = [];
 } else {
     $output['status']['code'] = "400";
-    $output['status']['name'] = "error";
-    $output['status']['description'] = "query preparation failed";
-    $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
-}
-
-// Check if the query execution was successful
-if (!$result) {
-    $output['status']['code'] = "400";
     $output['status']['name'] = "executed";
-    $output['status']['description'] = "query failed";
+    $output['status']['description'] = "no rows affected";
     $output['data'] = [];
-
-    mysqli_close($conn);
-
-    echo json_encode($output);
-
-    exit;
 }
 
-// Fetch the results
-$data = [];
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
-}
-
-$output['status']['code'] = "200";
-$output['status']['name'] = "ok";
-$output['status']['description'] = "success";
-$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-$output['data'] = $data;
-
+$stmt->close();
 mysqli_close($conn);
 
 echo json_encode($output);

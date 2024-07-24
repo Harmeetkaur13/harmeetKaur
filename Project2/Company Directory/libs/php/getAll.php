@@ -8,6 +8,13 @@ $executionStartTime = microtime(true);
 include ("config.php");
 
 header('Content-Type: application/json; charset=UTF-8');
+/////////////to ensure it does not show chache data
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header('Content-Type: application/json; charset=UTF-8');
+/////////////////
 
 $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 

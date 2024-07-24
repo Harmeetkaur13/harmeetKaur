@@ -37,8 +37,14 @@ $(document).ready(function () {
         $("#personnelBtn").removeClass("active");
         $("#departmentsBtn").removeClass("active");
         $("#locationsBtn").removeClass("active");
+
+        var url = "libs/php/SearchAll.php";
+        var timestamp = new Date().getTime();
+        var queryString = "?t=" + timestamp;
+        url += queryString;
         $.ajax({
-            url: "libs/php/SearchAll.php",
+            url: url,
+            cache: false,
             type: 'GET',
             dataType: 'json',
             data: {
@@ -49,20 +55,12 @@ $(document).ready(function () {
                     $("#searchTableBody").empty(); // Clear existing rows
                     console.log(result);
                     let head = `<tr class="table-header">
-                        <td class="align-middle text-nowrap">
-                               ID
-                            </td>
+                       
                             <td class="align-middle text-nowrap">
                                 Last, First Name
                             </td>
                             <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                DepartmentID
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
                                 Department Name
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                LocationID
                             </td>
                             <td class="align-middle text-nowrap d-none d-md-table-cell">
                                 locationName
@@ -79,20 +77,11 @@ $(document).ready(function () {
                     result.data.found.forEach(person => {
                         let row = `
                     <tr>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.id}
-                        </td>
                         <td class="align-middle text-nowrap">
                             ${person.lastName}, ${person.firstName}
                         </td>
                         <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.departmentID}
-                        </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
                             ${person.departmentName}
-                        </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.locationID}
                         </td>
                         <td class="align-middle text-nowrap d-none d-md-table-cell">
                             ${person.locationName}
@@ -129,9 +118,15 @@ $(document).ready(function () {
 
     });
     refreshActiveTable();
+
+
     function refreshPersonnelTable() {
+        var url = "libs/php/getAll.php";
+        var timestamp = new Date().getTime();
+        var queryString = "?t=" + timestamp;
+        url += queryString;
         $.ajax({
-            url: "libs/php/getAll.php",
+            url: url,
             type: 'GET',
             dataType: 'json',
             success: function (result) {
@@ -161,8 +156,13 @@ $(document).ready(function () {
         }
     }
     function refreshDepartmentsTable() {
+        var url = "libs/php/getAllDepartments.php";
+        var timestamp = new Date().getTime();
+        var queryString = "?t=" + timestamp;
+        url += queryString;
         $.ajax({
-            url: "libs/php/getAllDepartments.php", // Replace with the actual URL of your PHP script
+            url: url,
+            cache: false,
             type: 'GET',
             dataType: 'json',
             success: function (result) {
@@ -205,8 +205,13 @@ $(document).ready(function () {
         });
     }
     function refreshLocationsTable() {
+        var url = "libs/php/getallLocations.php";
+        var timestamp = new Date().getTime();
+        var queryString = "?t=" + timestamp;
+        url += queryString;
         $.ajax({
-            url: "libs/php/getallLocations.php",
+            url: url,
+            cache: false,
             type: 'GET',
             dataType: 'json',
             success: function (result) {
@@ -325,6 +330,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getPersonnelByID.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 // Retrieve the data-id attribute from the calling button
@@ -378,6 +384,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/updatePersonnel.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 id: $('#editPersonnelEmployeeID').val(),
@@ -406,6 +413,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getDepartmentByID.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 // Retrieve the data-id attribute from the calling button
@@ -455,6 +463,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/updateDepartment.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 id: $('#editDepartmentID').val(),
@@ -504,13 +513,13 @@ $(document).ready(function () {
             deletepersonnel(deleteUrl);
 
         } else if (deleteType === "department") {
-            msg = `<b>Can't Delete!</b><br>Sorry, this department cannot be deleted because of dependencies.`;
-            $("#deleteConfirmationModal").modal("hide");
-            showAlert(msg);
+            deleteUrl = "libs/php/deleteDepartmentByID.php";
+            deletedepartment(deleteUrl);
+
         } else if (deleteType === "location") {
-            msg = `<b>Can't Delete!</b><br>Sorry, this Location cannot be deleted because of dependencies.`;
-            $("#deleteConfirmationModal").modal("hide");
-            showAlert(msg);
+            deleteUrl = "libs/php/deleteLocationByID.php";
+            deletelocation(deleteUrl);
+
         }
 
     });
@@ -519,6 +528,7 @@ $(document).ready(function () {
         $.ajax({
             url: deleteUrl,
             type: "POST",
+            cache: false,
             dataType: "json",
             data: { id: deleteId },
             success: function (result) {
@@ -537,12 +547,68 @@ $(document).ready(function () {
             }
         });
     }
+    function deletedepartment(deleteUrl) {
+        $.ajax({
+            url: deleteUrl,
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            data: { departmentId: deleteId },
+            success: function (result) {
+                if (result.status.code == 200) {
+                    showAlert('Deleted successfully!');
+                    $("#deleteConfirmationModal").modal("hide");
+                    $("#refreshBtn").click();
+                } else if (result.status.description = "dependency") {
+                    var msg = `<b>Can't Delete!</b><br>Sorry, this department cannot be deleted because of dependencies.`;
+                    $("#deleteConfirmationModal").modal("hide");
+                    showAlert(msg);
+                } else {
+                    showAlert('Error: ' + result.status.description);
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showAlert(`Database error: ${textStatus}`);
+                $("#deleteConfirmationModal").modal("hide");
+            }
+        });
+    }
+    function deletelocation(deleteUrl) {
+        $.ajax({
+            url: deleteUrl,
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            data: { locationId: deleteId },
+            success: function (result) {
+                if (result.status.code == 200) {
+                    showAlert('Deleted successfully!');
+                    $("#deleteConfirmationModal").modal("hide");
+                    $("#refreshBtn").click();
+                } else if (result.status.description = "dependency") {
+                    var msg = `<b>Can't Delete!</b><br>Sorry, this Location cannot be deleted because of dependencies.`;
+                    $("#deleteConfirmationModal").modal("hide");
+                    showAlert(msg);
+                }
+                else {
+                    showAlert('Error: ' + result.status.description);
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showAlert(`Database error: ${textStatus}`);
+                $("#deleteConfirmationModal").modal("hide");
+            }
+        });
+    }
     /////FILTER MODAL///////////////////////////////////////////////// /////////////////////////////////////////////////
     function getPersonnelByDepartment(DepartmentID) {
 
         $.ajax({
             url: "libs/php/getPersonnelByDepartment.php",
             type: 'GET',
+            cache: false,
             dataType: 'json',
             data: {
                 depId: DepartmentID
@@ -568,6 +634,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getPersonnelByLocation.php",
             type: 'GET',
+            cache: false,
             dataType: 'json',
             data: {
                 locationId: locationID
@@ -660,6 +727,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getAllDepartments.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             success: function (result) {
                 var resultCode = result.status.code;
@@ -700,6 +768,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/insertPersonnel.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 first: $('#addPersonnelFirstName').val(),
@@ -727,6 +796,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getallLocations.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             success: function (result) {
                 var resultCode = result.status.code;
@@ -763,6 +833,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/getAllDepartments.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             success: function (result) {
                 var resultCode = result.status.code;
@@ -825,6 +896,7 @@ $(document).ready(function () {
         $.ajax({
             url: "libs/php/insertLocation.php",
             type: "POST",
+            cache: false,
             dataType: "json",
             data: {
                 name: capitalize(String($('#addLocationName').val())),
