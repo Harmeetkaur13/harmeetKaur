@@ -82,9 +82,9 @@ footer {
 }
 
 .modal-dialog-left {
-    position: absolute;
-    left: 580px;
-    top: 5%;
+    /* position: absolute; */
+    left: 36%;
+    top: 6%;
     /* transform: translateY(-50%); */
     max-width: 300px;
 }
