@@ -30,10 +30,13 @@ $(document).ready(function () {
             // console.log(person.id);
         });
     }
+    var savedactivebtn;
+
     $("#searchInp").on("keyup", function () {
         $("#departmentTableBody, #personnelTableBody, #locationTableBody").each(function () {
             $(this).empty();
         });
+
         $("#personnelBtn").removeClass("active");
         $("#departmentsBtn").removeClass("active");
         $("#locationsBtn").removeClass("active");
@@ -54,26 +57,8 @@ $(document).ready(function () {
                 if (result.status.code == 200) {
                     $("#searchTableBody").empty(); // Clear existing rows
                     console.log(result);
-                    let head = `<tr class="table-header">
-                       
-                            <td class="align-middle text-nowrap">
-                                Last, First Name
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                Department Name
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                locationName
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                Email Address
-                            </td>
-                            <td class="align-middle text-nowrap d-none d-md-table-cell">
-                                Job Title
-                            </td>
 
-                        </tr> `;
-                    $("#searchTableBody").append(head);
+
                     result.data.found.forEach(person => {
                         let row = `
                     <tr>
@@ -89,10 +74,17 @@ $(document).ready(function () {
                         <td class="align-middle text-nowrap d-none d-md-table-cell">
                             ${person.email}
                         </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.jobTitle}
-                        </td>
                         
+                        <td class="text-end text-nowrap">
+                           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                             data-bs-target="#editPersonnelModal" data-id="${person.id}">
+                             <i class="fa-solid fa-pencil fa-fw"></i>
+                           </button>
+                           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                             data-bs-target="#deleteConfirmationModal" data-id="${person.id}" data-type="personnel">
+                             <i class="fa-solid fa-trash fa-fw"></i>
+                           </button>
+                        </td>
                     </tr>
                 `;
 
@@ -106,9 +98,6 @@ $(document).ready(function () {
                 }
                 else {
                     alert('Error: ' + result.status.description);
-
-
-
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -125,6 +114,7 @@ $(document).ready(function () {
         var timestamp = new Date().getTime();
         var queryString = "?t=" + timestamp;
         url += queryString;
+        savedactivebtn = document.querySelector('.active');
         $.ajax({
             url: url,
             type: 'GET',
@@ -160,6 +150,7 @@ $(document).ready(function () {
         var timestamp = new Date().getTime();
         var queryString = "?t=" + timestamp;
         url += queryString;
+        savedactivebtn = document.querySelector('.active');
         $.ajax({
             url: url,
             cache: false,
@@ -170,7 +161,7 @@ $(document).ready(function () {
                     $('#searchInp').val("");
                     $("#searchTableBody").empty();
                     $("#departmentTableBody").empty(); // Clear existing rows
-                    console.log(result);
+                    // console.log(result);
 
                     result.data.forEach(department => {
                         let row = `
@@ -209,6 +200,7 @@ $(document).ready(function () {
         var timestamp = new Date().getTime();
         var queryString = "?t=" + timestamp;
         url += queryString;
+        savedactivebtn = document.querySelector('.active');
         $.ajax({
             url: url,
             cache: false,
@@ -221,16 +213,19 @@ $(document).ready(function () {
                     $("#locationTableBody").empty(); // Clear existing rows
                     console.log(result);
 
-                    result.data.forEach(department => {
+                    result.data.forEach(location => {
                         let row = `
                                 <tr>
                                     <td class="align-middle text-nowrap">
-                                        ${department.name}
+                                        ${location.name}
                                     </td>
                                       <td class="text-end text-nowrap">
-                                    
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#deleteConfirmationModal" data-id="${department.id}" data-type="location">
+                                    data-bs-target="#editLocationModal" data-id="${location.id}">
+                                    <i class="fa-solid fa-pencil fa-fw"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#deleteConfirmationModal" data-id="${location.id}" data-type="location">
                                         <i class="fa-solid fa-trash fa-fw"></i>
                                     </button>
                                 </td>
@@ -263,7 +258,13 @@ $(document).ready(function () {
     }
 
     $("#refreshBtn").click(function () {
+        if (savedactivebtn) {
+            // Ensure x is a string and remove any extra whitespace
+            savedactivebtn = $.trim(String(savedactivebtn.id));
+            $("#" + savedactivebtn).addClass("active");
+            savedactivebtn = null;
 
+        }
         if ($("#personnelBtn").hasClass("active")) {
             refreshPersonnelTable();
         } else {
@@ -476,6 +477,71 @@ $(document).ready(function () {
                     showAlert('Department updated successfully');
                     $("#refreshBtn").click();
                     $("#editDepartmentModal").modal('hide');
+                } else {
+                    showAlert('Error: ' + result.status.description);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showAlert(`Database error: ${textStatus}`);
+            }
+        });
+    });
+    $("#editLocationModal").on("show.bs.modal", function (e) {
+        $.ajax({
+            url: "libs/php/getLocationByID.php",
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            data: {
+                // Retrieve the data-id attribute from the calling button
+                // see https://getbootstrap.com/docs/5.0/components/modal/#varying-modal-content
+                // for the non-jQuery JavaScript alternative
+                id: $(e.relatedTarget).attr("data-id")
+            },
+            success: function (result) {
+                var resultCode = result.status.code;
+
+                if (resultCode == 200) {
+
+                    // Update the hidden input with the employee id so that
+                    // it can be referenced when the form is submitted
+
+                    $("#editLocationID").val(result.data[0].id);
+                    $("#editLocationName").val(result.data[0].name);
+
+                } else {
+                    $("#editPersonnelModal .modal-title").replaceWith(
+                        "Error retrieving data"
+                    );
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#editDepartmentModal.modal-title").replaceWith(
+                    "Error retrieving data"
+                );
+            }
+        });
+
+    });
+    $("#editLocationForm").on("submit", function (e) {
+        e.preventDefault(); // Stop the default form submission
+
+        $.ajax({
+            url: "libs/php/updateLocation.php",
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            data: {
+                id: $('#editLocationID').val(),
+                name: $('#editLocationName').val(),
+
+            },
+            success: function (result) {
+                // console.log('Server response:', result);
+                if (result.status.code == 200) {
+                    showAlert('Location updated successfully');
+                    $("#refreshBtn").click();
+                    $("#editLocationModal").modal('hide');
                 } else {
                     showAlert('Error: ' + result.status.description);
                 }
