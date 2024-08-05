@@ -20,8 +20,8 @@ $(document).ready(function () {
                 data-bs-target="#editPersonnelModal" data-id="${person.id}">
                 <i class="fa-solid fa-pencil fa-fw"></i>
             </button>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                data-bs-target="#deleteConfirmationModal" data-id="${person.id}" data-type="personnel">
+            <button type="button" class="deleteemployeebtn btn btn-primary btn-sm" 
+                 data-id="${person.id}" data-type="personnel" data-name="${person.firstName} ${person.lastName}">
                 <i class="fa-solid fa-trash fa-fw"></i>
             </button>
         </td>
@@ -80,10 +80,10 @@ $(document).ready(function () {
                              data-bs-target="#editPersonnelModal" data-id="${person.id}">
                              <i class="fa-solid fa-pencil fa-fw"></i>
                            </button>
-                           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                             data-bs-target="#deleteConfirmationModal" data-id="${person.id}" data-type="personnel">
-                             <i class="fa-solid fa-trash fa-fw"></i>
-                           </button>
+                           <button type="button" class="deleteemployeebtn btn btn-primary btn-sm" 
+                              data-id="${person.id}" data-type="personnel" data-name="${person.firstName} ${person.lastName}">
+                              <i class="fa-solid fa-trash fa-fw"></i>
+                             </button>
                         </td>
                     </tr>
                 `;
@@ -169,7 +169,7 @@ $(document).ready(function () {
                             <td class="align-middle text-nowrap">
                                 ${department.name}
                             </td>
-                             <td class="align-middle text-nowrap">
+                            <td class="align-middle text-nowrap">
                                 ${department.locationName}
                             </td>
                             <td class="text-end text-nowrap">
@@ -177,15 +177,16 @@ $(document).ready(function () {
                                     data-bs-target="#editDepartmentModal" data-id="${department.id}">
                                     <i class="fa-solid fa-pencil fa-fw"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteConfirmationModal" data-id="${department.id}" data-type="department">
+                                <button type="button" class="deleteDepartmentBtn btn btn-primary btn-sm"
+                                     data-id="${department.id}" data-name="${department.name}" data-type="department">
                                     <i class="fa-solid fa-trash fa-fw"></i>
                                 </button>
                             </td>
                         </tr>
-                    `;
+                        `;
                         $("#departmentTableBody").append(row);
                     });
+
                 } else {
                     alert('Error: ' + result.status.description);
                 }
@@ -211,7 +212,7 @@ $(document).ready(function () {
                     $('#searchInp').val("");
                     $("#searchTableBody").empty();
                     $("#locationTableBody").empty(); // Clear existing rows
-                    console.log(result);
+
 
                     result.data.forEach(location => {
                         let row = `
@@ -224,8 +225,8 @@ $(document).ready(function () {
                                     data-bs-target="#editLocationModal" data-id="${location.id}">
                                     <i class="fa-solid fa-pencil fa-fw"></i>
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#deleteConfirmationModal" data-id="${location.id}" data-type="location">
+                                    <button type="button" class="deletelocationbtn btn btn-primary btn-sm" 
+                                         data-id="${location.id}" data-type="location" data-name="${location.name}">
                                         <i class="fa-solid fa-trash fa-fw"></i>
                                     </button>
                                 </td>
@@ -557,39 +558,114 @@ $(document).ready(function () {
 
     var deleteType;
     var deleteId;
+    var deleteitem;
+
     $("#deleteConfirmationModal").on("show.bs.modal", function (e) {
-        deleteType = $(e.relatedTarget).attr("data-type");
-        deleteId = $(e.relatedTarget).attr("data-id");
-        var deleteMessage = `<b>Are you sure?</b><br>Do you really want to delete this `;
+
+
         if (deleteType === "personnel") {
-            deleteMessage += "employee?";
+            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
         } else if (deleteType === "department") {
-            deleteMessage += "department?";
+            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
         } else if (deleteType === "location") {
-            deleteMessage += "location?";
+            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
         }
         $("#deleteConfirmationMessage").html(deleteMessage);
         // $("#deleteConfirmationModal").modal("show");
     });
+
     $("#confirmDeleteBtn").on("click", function () {
         var deleteUrl;
-        var msg;
         if (deleteType === "personnel") {
             deleteUrl = "libs/php/deletePersonnel.php";
             deletepersonnel(deleteUrl);
-
         } else if (deleteType === "department") {
             deleteUrl = "libs/php/deleteDepartmentByID.php";
             deletedepartment(deleteUrl);
-
         } else if (deleteType === "location") {
             deleteUrl = "libs/php/deleteLocationByID.php";
             deletelocation(deleteUrl);
-
         }
-
     });
 
+
+
+    $('#personnelTableBody').on('click', '.deleteemployeebtn', function () {
+
+        deleteType = $(this).attr("data-type");
+        deleteId = $(this).attr("data-id");
+        deleteitem = $(this).attr("data-name");
+
+        $("#deleteConfirmationModal").modal("show");
+
+
+    });
+    $('#departmentTableBody').on('click', '.deleteDepartmentBtn', function () {
+
+        deleteType = $(this).attr("data-type");
+        deleteId = $(this).attr("data-id");
+        deleteitem = $(this).attr("data-name");
+        $.ajax({
+            url:
+                "libs/php/checkdepartmentUse.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                deptId: $(this).attr("data-id") // Retrieves the data-id attribute from the calling button
+            },
+            success: function (result) {
+                if (result.status.code == 200) {
+                    if (result.data[0].personnelCount == 0) {
+                        // $("#areYouSureDeptName").text(result.data[0].departmentName);
+                        $("#deleteConfirmationModal").modal("show");
+                    } else {
+                        dname = result.data[0].departmentName;
+                        count = result.data[0].personnelCount;
+                        var msg = `<b>Can't Delete!</b><br>You cannot remove the entry for ${dname} because it has ${count} employees assigned to it.`;
+                        showAlert(msg);
+                    }
+                } else {
+                    showAlert("Error retrieving data");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showAlert("Error retrieving data");
+            }
+        });
+    });
+    $('#locationTableBody').on('click', '.deletelocationbtn', function () {
+
+        deleteType = $(this).attr("data-type");
+        deleteId = $(this).attr("data-id");
+        deleteitem = $(this).attr("data-name");
+        $.ajax({
+            url:
+                "libs/php/checkLocationUse.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                locId: $(this).attr("data-id") // Retrieves the data-id attribute from the calling button
+            },
+            success: function (result) {
+                if (result.status.code == 200) {
+                    if (result.data[0].departmentCount == 0) {
+                        // $("#areYouSureDeptName").text(result.data[0].departmentName);
+                        $("#deleteConfirmationModal").modal("show");
+                    } else {
+                        dname = result.data[0].locationName;
+                        count = result.data[0].departmentCount;
+                        var msg = `<b>Can't Delete!</b><br>You cannot remove the entry for ${dname} because it has ${count} departments assigned to it.`;
+                        showAlert(msg);
+                    }
+                } else {
+                    showAlert("Error retrieving data");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                showAlert("Error retrieving data");
+            }
+        });
+    });
     function deletepersonnel(deleteUrl) {
         $.ajax({
             url: deleteUrl,
@@ -625,10 +701,7 @@ $(document).ready(function () {
                     showAlert('Deleted successfully!');
                     $("#deleteConfirmationModal").modal("hide");
                     $("#refreshBtn").click();
-                } else if (result.status.description = "dependency") {
-                    var msg = `<b>Can't Delete!</b><br>Sorry, this department cannot be deleted because of dependencies.`;
-                    $("#deleteConfirmationModal").modal("hide");
-                    showAlert(msg);
+
                 } else {
                     showAlert('Error: ' + result.status.description);
                 }
@@ -652,10 +725,6 @@ $(document).ready(function () {
                     showAlert('Deleted successfully!');
                     $("#deleteConfirmationModal").modal("hide");
                     $("#refreshBtn").click();
-                } else if (result.status.description = "dependency") {
-                    var msg = `<b>Can't Delete!</b><br>Sorry, this Location cannot be deleted because of dependencies.`;
-                    $("#deleteConfirmationModal").modal("hide");
-                    showAlert(msg);
                 }
                 else {
                     showAlert('Error: ' + result.status.description);
@@ -721,48 +790,22 @@ $(document).ready(function () {
         });
     }
 
-    // Function to handle selection from department or location
-    function handleSelection(type, id) {
-        // Remove active class from all items and add to the selected one
-        if (type === 'department') {
-            $('#department-list .list-group-item').removeClass('bg-primary text-white');
-            $('#department-list .list-group-item[value="' + id + '"]').addClass('bg-primary text-white');
-            getPersonnelByDepartment(id);
-        } else if (type === 'location') {
-            $('#location-list .list-group-item').removeClass('bg-primary text-white');
-            $('#location-list .list-group-item[value="' + id + '"]').addClass('bg-primary text-white');
-            getPersonnelByLocation(id);
-        }
-    }
-
-    // Event listener for department selection
-    $('#department-list').on('click', '.list-group-item', function () {
-
-        const deptId = $(this).val();
-        handleSelection('department', deptId);
-    });
-
-    // Event listener for location selection
-    $('#location-list').on('click', '.list-group-item', function () {
-
-        const locId = $(this).val();
-        handleSelection('location', locId);
-    });
-
     $("#filterModal").on("show.bs.modal", function () {
         // Fetch departments and populate the dropdown
+        const departmentSelect = document.getElementById('filterPersonnelByDepartment');
+        const locationSelect = document.getElementById('filterPersonnelByLocation');
+        // Clear existing options
+        departmentSelect.innerHTML = '<option value="0">All</option>';
+        locationSelect.innerHTML = '<option value="0">All</option>';
         fetch('libs/php/getAllDepartments.php')
             .then(response => response.json())
             .then(result => {
-                const departmentList = document.getElementById('department-list');
-                departmentList.innerHTML = ''; // Clear previous content
                 result.data.forEach(department => {
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.className = 'list-group-item list-group-item-action';
-                    button.value = department.id;
-                    button.textContent = department.name;
-                    departmentList.appendChild(button);
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.textContent = department.name;
+                    departmentSelect.appendChild(option);
+
                 });
             });
 
@@ -770,19 +813,35 @@ $(document).ready(function () {
         fetch('libs/php/getallLocations.php')
             .then(response => response.json())
             .then(result => {
-                const locationList = document.getElementById('location-list');
-                locationList.innerHTML = ''; // Clear previous content
                 result.data.forEach(location => {
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.value = location.id;
-                    button.className = 'list-group-item list-group-item-action';
-                    button.textContent = location.name;
-                    locationList.appendChild(button);
+                    const option = document.createElement('option');
+                    option.value = location.id;
+                    option.textContent = location.name;
+                    locationSelect.appendChild(option);
                 });
             });
     });
+    $("#filterPersonnelByDepartment").change(function () {
 
+        if (this.value > 0) {
+
+            $("#filterPersonnelByLocation").val(0);
+            const depId = $(this).val();
+            getPersonnelByDepartment(depId);
+
+        }
+    })
+
+    $("#filterPersonnelByLocation").change(function () {
+
+        if (this.value > 0) {
+
+            $("#filterPersonnelByDepartment").val(0);
+            const locId = $(this).val();
+            getPersonnelByLocation(locId);
+
+        }
+    })
 
     ////////////////////// Function to show alert message
     function showAlert(message) {

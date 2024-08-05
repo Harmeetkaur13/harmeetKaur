@@ -465,64 +465,54 @@
     </div>
 
     <!-- filter modal -->
+    <div id="filterModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
 
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
 
-    <div id="filterModal" class="modal fade" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-sm-custom modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content shadow">
+            <div class="modal-content modal-sm shadow">
+
                 <div class="modal-header bg-primary bg-gradient text-white">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Personnel</h5>
+                    <h5 class="modal-title">Filter employees</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
 
-                    <!-- Departments and Locations -->
-                    <!-- <div class="col-md-6"> -->
-                    <div class="accordion" id="accordion1">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Departments
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
-                                data-bs-parent="#accordion1">
-                                <div class="accordion-body" id="department-list">
-                                    <ul class="list-group">
-                                        <!-- Department list items will be populated here -->
-                                        <li class="list-group-item" data-id="dept1">Department 1</li>
-                                        <li class="list-group-item" data-id="dept2">Department 2</li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <form id="filterPersonnelForm">
+
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="filterPersonnelByDepartment" placeholder="Department">
+                                <option value="0">All</option>
+
+                            </select>
+                            <label for="filterPersonnelByDepartment">Department</label>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Locations
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordion1">
-                                <div class="accordion-body" id="location-list">
-                                    <ul class="list-group text-center">
-                                        <!-- Location list items will be populated here -->
-                                    </ul>
-                                </div>
-                            </div>
+
+                        <div class="form-floating">
+                            <select class="form-select" id="filterPersonnelByLocation" placeholder="Location">
+                                <option value="0">All</option>
+
+                            </select>
+                            <label for="filterPersonnelByLocation">Location</label>
                         </div>
-                    </div>
+                    </form>
 
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm myBtn"
+                        data-bs-dismiss="modal">CLOSE</button>
                 </div>
+
             </div>
+
         </div>
+
     </div>
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -555,7 +545,7 @@
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content shadow text-center">
                 <div class="modal-header bg-primary bg-gradient text-white">
-                    <h5 class=" modal-title " id="customAlertModalLabel">Alert</h5>
+                    <h5 class="modal-title" id="customAlertModalLabel">Alert</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>

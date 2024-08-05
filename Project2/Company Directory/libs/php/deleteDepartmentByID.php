@@ -46,28 +46,7 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-// Check for dependencies in the personnel table
-$query = 'SELECT COUNT(*) AS count FROM personnel WHERE departmentID = ?';
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $departmentId);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$stmt->close();
 
-if ($row['count'] > 0) {
-	$output['status']['code'] = "400";
-	$output['status']['name'] = "dependency";
-	$output['status']['description'] = "cannot delete department with dependencies";
-	$output['data'] = [];
-
-	mysqli_close($conn);
-
-	echo json_encode($output);
-	exit;
-}
-
-// No dependencies found, proceed with deletion
 $query = 'DELETE FROM department WHERE id = ?';
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $departmentId);

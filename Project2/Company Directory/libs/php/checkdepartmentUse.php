@@ -1,4 +1,3 @@
-populate select
 <?php
 
 ini_set('display_errors', 'On');
@@ -18,12 +17,12 @@ header('Content-Type: application/json; charset=UTF-8');
 $executionStartTime = microtime(true);
 
 // Retrieve and sanitize the locationId from the AJAX request
-$locationId = isset($_POST['locationId']) ? intval($_POST['locationId']) : null;
+$deptId = isset($_POST['deptId']) ? intval($_POST['deptId']) : null;
 
-if ($locationId === null) {
+if ($deptId === null) {
     $output['status']['code'] = "400";
     $output['status']['name'] = "bad request";
-    $output['status']['description'] = "missing locationId";
+    $output['status']['description'] = "missing deptId";
     $output['data'] = [];
     echo json_encode($output);
     exit;
@@ -47,26 +46,38 @@ if (mysqli_connect_errno()) {
     exit;
 }
 
-$query = 'DELETE FROM location WHERE id = ?';
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $locationId);
-$stmt->execute();
+// Check for dependencies in the department table
+$query = 'SELECT
+    d.name AS departmentName,
+    COUNT(p.id) as personnelCount
+ FROM
+   department d LEFT JOIN 
+   personnel p ON (p.departmentID = d.id)
+ WHERE d.id = ?';
 
-if ($stmt->affected_rows > 0) {
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $deptId);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$stmt->close();
+
+$output = [];
+if ($row) {
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
-    $output['data'] = [];
+    $output['data'] = [$row];
 } else {
-    $output['status']['code'] = "400";
-    $output['status']['name'] = "executed";
-    $output['status']['description'] = "no rows affected";
+    $output['status']['code'] = "404";
+    $output['status']['name'] = "not found";
+    $output['status']['description'] = "department not found";
     $output['data'] = [];
 }
 
-$stmt->close();
 mysqli_close($conn);
 
+$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 echo json_encode($output);
 
 ?>
