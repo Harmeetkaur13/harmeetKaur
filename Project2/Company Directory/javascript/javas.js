@@ -1,35 +1,63 @@
 $(document).ready(function () {
     function fillpersonneltable(result) {
+        var frag = document.createDocumentFragment();
+
         result.data.forEach(person => {
-            let row = `
-        <tr>
-        <td class="align-middle text-nowrap">
-            ${person.lastName}, ${person.firstName}
-        </td>
-        <td class="align-middle text-nowrap d-none d-md-table-cell">
-            ${person.department}
-        </td>
-        <td class="align-middle text-nowrap d-none d-md-table-cell">
-            ${person.location}
-        </td>
-        <td class="align-middle text-nowrap d-none d-md-table-cell">
-            ${person.email}
-        </td>
-        <td class="text-end text-nowrap">
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                data-bs-target="#editPersonnelModal" data-id="${person.id}">
-                <i class="fa-solid fa-pencil fa-fw"></i>
-            </button>
-            <button type="button" class="deleteemployeebtn btn btn-primary btn-sm" 
-                 data-id="${person.id}" data-type="personnel" data-name="${person.firstName} ${person.lastName}">
-                <i class="fa-solid fa-trash fa-fw"></i>
-            </button>
-        </td>
-        </tr>`;
-            $("#personnelTableBody").append(row);
-            // console.log(person.id);
+            var row = document.createElement("tr");
+
+            var name = document.createElement("td");
+            name.className = "align-middle text-nowrap";
+            name.textContent = `${person.lastName}, ${person.firstName}`;
+            row.appendChild(name);
+
+            var department = document.createElement("td");
+            department.className = "align-middle text-nowrap d-none d-md-table-cell";
+            department.textContent = person.department;
+            row.appendChild(department);
+
+            var location = document.createElement("td");
+            location.className = "align-middle text-nowrap d-none d-md-table-cell";
+            location.textContent = person.location;
+            row.appendChild(location);
+
+            var email = document.createElement("td");
+            email.className = "align-middle text-nowrap d-none d-md-table-cell";
+            email.textContent = person.email;
+            row.appendChild(email);
+
+            var actions = document.createElement("td");
+            actions.className = "text-end text-nowrap";
+
+            var editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.className = "btn btn-primary btn-sm me-1";
+            editButton.setAttribute("data-bs-toggle", "modal");
+            editButton.setAttribute("data-bs-target", "#editPersonnelModal");
+            editButton.setAttribute("data-id", person.id);
+            var editIcon = document.createElement("i");
+            editIcon.className = "fa-solid fa-pencil fa-fw";
+            editButton.appendChild(editIcon);
+            actions.appendChild(editButton);
+
+            var deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "deleteemployeebtn btn btn-primary btn-sm";
+            deleteButton.setAttribute("data-id", person.id);
+            deleteButton.setAttribute("data-type", "personnel");
+            deleteButton.setAttribute("data-name", `${person.firstName} ${person.lastName}`);
+            var deleteIcon = document.createElement("i");
+            deleteIcon.className = "fa-solid fa-trash fa-fw";
+            deleteButton.appendChild(deleteIcon);
+            actions.appendChild(deleteButton);
+
+            row.appendChild(actions);
+
+            frag.appendChild(row);
         });
+
+        $("#personnelTableBody").append(frag);
     }
+
     var savedactivebtn;
 
     $("#searchInp").on("keyup", function () {
@@ -56,42 +84,8 @@ $(document).ready(function () {
             success: function (result) {
                 if (result.status.code == 200) {
                     $("#searchTableBody").empty(); // Clear existing rows
-                    console.log(result);
+                    fillpersonneltable(result);
 
-
-                    result.data.found.forEach(person => {
-                        let row = `
-                    <tr>
-                        <td class="align-middle text-nowrap">
-                            ${person.lastName}, ${person.firstName}
-                        </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.departmentName}
-                        </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.locationName}
-                        </td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">
-                            ${person.email}
-                        </td>
-                        
-                        <td class="text-end text-nowrap">
-                           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                             data-bs-target="#editPersonnelModal" data-id="${person.id}">
-                             <i class="fa-solid fa-pencil fa-fw"></i>
-                           </button>
-                           <button type="button" class="deleteemployeebtn btn btn-primary btn-sm" 
-                              data-id="${person.id}" data-type="personnel" data-name="${person.firstName} ${person.lastName}">
-                              <i class="fa-solid fa-trash fa-fw"></i>
-                             </button>
-                        </td>
-                    </tr>
-                `;
-
-                        $("#searchTableBody").append(row);
-
-
-                    });
                 } else if (result.status.code == 404) {
                     $("#searchTableBody").html("No match found!!");
 
@@ -161,38 +155,59 @@ $(document).ready(function () {
                     $('#searchInp').val("");
                     $("#searchTableBody").empty();
                     $("#departmentTableBody").empty(); // Clear existing rows
-                    // console.log(result);
+                    var frag = document.createDocumentFragment();
 
                     result.data.forEach(department => {
-                        let row = `
-                        <tr>
-                            <td class="align-middle text-nowrap">
-                                ${department.name}
-                            </td>
-                            <td class="align-middle text-nowrap">
-                                ${department.locationName}
-                            </td>
-                            <td class="text-end text-nowrap">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editDepartmentModal" data-id="${department.id}">
-                                    <i class="fa-solid fa-pencil fa-fw"></i>
-                                </button>
-                                <button type="button" class="deleteDepartmentBtn btn btn-primary btn-sm"
-                                     data-id="${department.id}" data-name="${department.name}" data-type="department">
-                                    <i class="fa-solid fa-trash fa-fw"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        `;
-                        $("#departmentTableBody").append(row);
+                        var row = document.createElement("tr");
+
+                        var nameCell = document.createElement("td");
+                        nameCell.className = "align-middle text-nowrap";
+                        nameCell.textContent = department.name;
+                        row.appendChild(nameCell);
+
+                        var locationCell = document.createElement("td");
+                        locationCell.className = "align-middle text-nowrap";
+                        locationCell.textContent = department.locationName;
+                        row.appendChild(locationCell);
+
+                        var actionsCell = document.createElement("td");
+                        actionsCell.className = "text-end text-nowrap";
+
+                        var editButton = document.createElement("button");
+                        editButton.type = "button";
+                        editButton.className = "btn btn-primary btn-sm me-1";
+                        editButton.setAttribute("data-bs-toggle", "modal");
+                        editButton.setAttribute("data-bs-target", "#editDepartmentModal");
+                        editButton.setAttribute("data-id", department.id);
+                        var editIcon = document.createElement("i");
+                        editIcon.className = "fa-solid fa-pencil fa-fw";
+                        editButton.appendChild(editIcon);
+                        actionsCell.appendChild(editButton);
+
+                        var deleteButton = document.createElement("button");
+                        deleteButton.type = "button";
+                        deleteButton.className = "deleteDepartmentBtn btn btn-primary btn-sm";
+                        deleteButton.setAttribute("data-id", department.id);
+                        deleteButton.setAttribute("data-name", department.name);
+                        deleteButton.setAttribute("data-type", "department");
+                        var deleteIcon = document.createElement("i");
+                        deleteIcon.className = "fa-solid fa-trash fa-fw";
+                        deleteButton.appendChild(deleteIcon);
+                        actionsCell.appendChild(deleteButton);
+
+                        row.appendChild(actionsCell);
+
+                        frag.appendChild(row);
                     });
+
+                    $("#departmentTableBody").append(frag);
 
                 } else {
                     alert('Error: ' + result.status.description);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(`Database error: ${textStatus}`);
+                alert(`Database error: ${textStatus} `);
             }
         });
     }
@@ -212,36 +227,51 @@ $(document).ready(function () {
                     $('#searchInp').val("");
                     $("#searchTableBody").empty();
                     $("#locationTableBody").empty(); // Clear existing rows
-
+                    var frag = document.createDocumentFragment();
 
                     result.data.forEach(location => {
-                        let row = `
-                                <tr>
-                                    <td class="align-middle text-nowrap">
-                                        ${location.name}
-                                    </td>
-                                      <td class="text-end text-nowrap">
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editLocationModal" data-id="${location.id}">
-                                    <i class="fa-solid fa-pencil fa-fw"></i>
-                                    </button>
-                                    <button type="button" class="deletelocationbtn btn btn-primary btn-sm" 
-                                         data-id="${location.id}" data-type="location" data-name="${location.name}">
-                                        <i class="fa-solid fa-trash fa-fw"></i>
-                                    </button>
-                                </td>
-                                    
-                                </tr>
-                            `;
+                        var row = document.createElement("tr");
+                        var name = document.createElement("td");
+                        name.className = "align-middle text-nowrap";
+                        name.textContent = location.name;
+                        row.appendChild(name);
+                        var actionsCell = document.createElement("td");
+                        actionsCell.className = "text-end text-nowrap";
 
-                        $("#locationTableBody").append(row);
+                        var editButton = document.createElement("button");
+                        editButton.type = "button";
+                        editButton.className = "btn btn-primary btn-sm me-1";
+                        editButton.setAttribute("data-bs-toggle", "modal");
+                        editButton.setAttribute("data-bs-target", "#editLocationModal");
+                        editButton.setAttribute("data-id", location.id);
+                        var editIcon = document.createElement("i");
+                        editIcon.className = "fa-solid fa-pencil fa-fw";
+                        editButton.appendChild(editIcon);
+                        actionsCell.appendChild(editButton);
+
+                        var deleteButton = document.createElement("button");
+                        deleteButton.type = "button";
+                        deleteButton.className = "deletelocationbtn btn btn-primary btn-sm";
+                        deleteButton.setAttribute("data-id", location.id);
+                        deleteButton.setAttribute("data-name", location.name);
+                        deleteButton.setAttribute("data-type", "location");
+                        var deleteIcon = document.createElement("i");
+                        deleteIcon.className = "fa-solid fa-trash fa-fw";
+                        deleteButton.appendChild(deleteIcon);
+                        actionsCell.appendChild(deleteButton);
+
+                        row.appendChild(actionsCell);
+
+                        frag.appendChild(row);
                     });
+                    $("#locationTableBody").append(frag);
+
                 } else {
                     alert('Error: ' + result.status.description);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(`Database error: ${textStatus}`);
+                alert(`Database error: ${textStatus} `);
             }
         });
     }
@@ -250,21 +280,25 @@ $(document).ready(function () {
 
     function refreshActiveTable() {
         if ($("#personnelBtn").hasClass("active")) {
+            document.getElementById("filterBtn").style.display = "block";
             refreshPersonnelTable();
         } else if ($("#departmentsBtn").hasClass("active")) {
+            document.getElementById("filterBtn").style.display = "none";
             refreshDepartmentsTable();
         } else {
+            document.getElementById("filterBtn").style.display = "none";
             refreshLocationsTable();
         }
     }
 
     $("#refreshBtn").click(function () {
+        if (savedoption) {
+            savedoption = false;
+        }
         if (savedactivebtn) {
-            // Ensure x is a string and remove any extra whitespace
             savedactivebtn = $.trim(String(savedactivebtn.id));
             $("#" + savedactivebtn).addClass("active");
             savedactivebtn = null;
-
         }
         if ($("#personnelBtn").hasClass("active")) {
             refreshPersonnelTable();
@@ -407,7 +441,7 @@ $(document).ready(function () {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                showAlert(`Database error: ${textStatus}`);
+                showAlert(`Database error: ${textStatus} `);
             }
         });
     });
@@ -483,7 +517,7 @@ $(document).ready(function () {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                showAlert(`Database error: ${textStatus}`);
+                showAlert(`Database error: ${textStatus} `);
             }
         });
     });
@@ -548,7 +582,7 @@ $(document).ready(function () {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                showAlert(`Database error: ${textStatus}`);
+                showAlert(`Database error: ${textStatus} `);
             }
         });
     });
@@ -564,7 +598,7 @@ $(document).ready(function () {
 
 
         if (deleteType === "personnel") {
-            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
+            var deleteMessage = `< b > Are you sure ?</b > <br>Do you really want to remove<br> ${deleteitem}`;
         } else if (deleteType === "department") {
             var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
         } else if (deleteType === "location") {
@@ -805,8 +839,12 @@ $(document).ready(function () {
                     option.value = department.id;
                     option.textContent = department.name;
                     departmentSelect.appendChild(option);
-
                 });
+                // Set the saved option if it exists
+                if (savedoption && lastoption == "department") {
+                    departmentSelect.value = savedoption;
+                    getPersonnelByDepartment(savedoption);
+                }
             });
 
         // Fetch locations and populate the dropdown
@@ -819,27 +857,35 @@ $(document).ready(function () {
                     option.textContent = location.name;
                     locationSelect.appendChild(option);
                 });
+                // Set the saved option if it exists
+                if (savedoption && lastoption == "location") {
+                    locationSelect.value = savedoption;
+                    getPersonnelByLocation(savedoption);
+                }
+
             });
     });
+    var savedoption;
+    var lastoption;
     $("#filterPersonnelByDepartment").change(function () {
 
         if (this.value > 0) {
-
+            savedoption = $(this).val();
+            lastoption = "department";
             $("#filterPersonnelByLocation").val(0);
             const depId = $(this).val();
             getPersonnelByDepartment(depId);
-
         }
     })
 
     $("#filterPersonnelByLocation").change(function () {
 
         if (this.value > 0) {
-
+            savedoption = $(this).val();
+            lastoption = "location";
             $("#filterPersonnelByDepartment").val(0);
             const locId = $(this).val();
             getPersonnelByLocation(locId);
-
         }
     })
 
@@ -1047,4 +1093,7 @@ $(document).ready(function () {
     });
 
 });
+
+
+
 
