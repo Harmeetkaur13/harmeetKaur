@@ -83,8 +83,63 @@ $(document).ready(function () {
             },
             success: function (result) {
                 if (result.status.code == 200) {
+                    var frag = document.createDocumentFragment();
                     $("#searchTableBody").empty(); // Clear existing rows
-                    fillpersonneltable(result);
+                    result.data.forEach(person => {
+
+                        var row = document.createElement("tr");
+
+                        var name = document.createElement("td");
+                        name.className = "align-middle text-nowrap";
+                        name.textContent = `${person.lastName}, ${person.firstName}`;
+                        row.appendChild(name);
+
+                        var department = document.createElement("td");
+                        department.className = "align-middle text-nowrap d-none d-md-table-cell";
+                        department.textContent = person.department;
+                        row.appendChild(department);
+
+                        var location = document.createElement("td");
+                        location.className = "align-middle text-nowrap d-none d-md-table-cell";
+                        location.textContent = person.location;
+                        row.appendChild(location);
+
+                        var email = document.createElement("td");
+                        email.className = "align-middle text-nowrap d-none d-md-table-cell";
+                        email.textContent = person.email;
+                        row.appendChild(email);
+
+                        var actions = document.createElement("td");
+                        actions.className = "text-end text-nowrap";
+
+                        var editButton = document.createElement("button");
+                        editButton.type = "button";
+                        editButton.className = "btn btn-primary btn-sm me-1";
+                        editButton.setAttribute("data-bs-toggle", "modal");
+                        editButton.setAttribute("data-bs-target", "#editPersonnelModal");
+                        editButton.setAttribute("data-id", person.id);
+                        var editIcon = document.createElement("i");
+                        editIcon.className = "fa-solid fa-pencil fa-fw";
+                        editButton.appendChild(editIcon);
+                        actions.appendChild(editButton);
+
+                        var deleteButton = document.createElement("button");
+                        deleteButton.type = "button";
+                        deleteButton.className = "deleteemployeebtn btn btn-primary btn-sm";
+                        deleteButton.setAttribute("data-id", person.id);
+                        deleteButton.setAttribute("data-type", "personnel");
+                        deleteButton.setAttribute("data-name", `${person.firstName} ${person.lastName}`);
+                        var deleteIcon = document.createElement("i");
+                        deleteIcon.className = "fa-solid fa-trash fa-fw";
+                        deleteButton.appendChild(deleteIcon);
+                        actions.appendChild(deleteButton);
+
+                        row.appendChild(actions);
+
+                        frag.appendChild(row);
+                    });
+
+                    $("#searchTableBody").append(frag);
 
                 } else if (result.status.code == 404) {
                     $("#searchTableBody").html("No match found!!");
@@ -674,7 +729,7 @@ $(document).ready(function () {
         deleteitem = $(this).attr("data-name");
         $.ajax({
             url:
-                "libs/php/checkLocationUse.php",
+                "libs/php/checklocationUse.php",
             type: "POST",
             dataType: "json",
             data: {
