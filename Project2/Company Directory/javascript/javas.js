@@ -335,13 +335,13 @@ $(document).ready(function () {
 
     function refreshActiveTable() {
         if ($("#personnelBtn").hasClass("active")) {
-            document.getElementById("filterBtn").style.display = "block";
+            $('#filterBtn').prop('disabled', false);
             refreshPersonnelTable();
         } else if ($("#departmentsBtn").hasClass("active")) {
-            document.getElementById("filterBtn").style.display = "none";
+            $('#filterBtn').prop('disabled', true);
             refreshDepartmentsTable();
         } else {
-            document.getElementById("filterBtn").style.display = "none";
+            $('#filterBtn').prop('disabled', true);
             refreshLocationsTable();
         }
     }
@@ -653,14 +653,13 @@ $(document).ready(function () {
 
 
         if (deleteType === "personnel") {
-            var deleteMessage = `< b > Are you sure ?</b > <br>Do you really want to remove<br> ${deleteitem}`;
+            var deleteMessage = `Are you sure that you want to delete the entry for ${deleteitem}`;
         } else if (deleteType === "department") {
-            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
+            var deleteMessage = `Are you sure that you want to delete the entry for ${deleteitem}`;
         } else if (deleteType === "location") {
-            var deleteMessage = `<b>Are you sure?</b><br>Do you really want to remove<br> ${deleteitem}`;
+            var deleteMessage = `Are you sure that you want to delete the entry for ${deleteitem}`;
         }
         $("#deleteConfirmationMessage").html(deleteMessage);
-        // $("#deleteConfirmationModal").modal("show");
     });
 
     $("#confirmDeleteBtn").on("click", function () {
@@ -710,7 +709,7 @@ $(document).ready(function () {
                     } else {
                         dname = result.data[0].departmentName;
                         count = result.data[0].personnelCount;
-                        var msg = `<b>Can't Delete!</b><br>You cannot remove the entry for ${dname} because it has ${count} employees assigned to it.`;
+                        var msg = `You cannot remove the entry for ${dname} because it has ${count} employees assigned to it.`;
                         showAlert(msg);
                     }
                 } else {
@@ -743,7 +742,7 @@ $(document).ready(function () {
                     } else {
                         dname = result.data[0].locationName;
                         count = result.data[0].departmentCount;
-                        var msg = `<b>Can't Delete!</b><br>You cannot remove the entry for ${dname} because it has ${count} departments assigned to it.`;
+                        var msg = `You cannot remove the entry for ${dname} because it has ${count} departments assigned to it.`;
                         showAlert(msg);
                     }
                 } else {
